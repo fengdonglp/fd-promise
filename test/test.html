@@ -52,28 +52,49 @@
   </script>
   <script>
     /* eslint-disable */
-    var a = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(111)
-        resolve(111)
-      }, 1000)
-    })
-    var b = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(222)
-        reject(333)
-      }, 1500)
-    })
-    var c = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(444)
-        reject(555)
-      }, 2500)
-    })
+    // var a = new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     console.log(111)
+    //     resolve(111)
+    //   }, 1000)
+    // })
+    // var b = new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     console.log(222)
+    //     reject(333)
+    //   }, 1500)
+    // })
+    // var c = new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     console.log(444)
+    //     reject(555)
+    //   }, 2500)
+    // })
 
-    Promise.race([a, b, c]).then(res => console.log(res), err => console.log(err))
-    Promise.all('1234').then(res => console.log(res))
+    // Promise.race([a, b, c]).then(res => console.log(res), err => console.log(err))
+    // Promise.all('1234').then(res => console.log(res))
     // Promise.reject(2).then(res => console.log(res)).catch(err => console.log('err ' + err))
+    
+    // 同一个promise的多个调用栈
+    // var promise = new Promise(resolve => resolve(111))
+    // promise.then(function(res) {console.log('then1: ' + res)})
+    // promise.then(function(res) {console.log('then2: ' + res)})
+
+    // then参数不为函数时忽略该then
+    // var promise = new Promise((resolve,reject) => {resolve(111)})
+    // promise.then(111).then(res => console.log(res))
+
+    // 测试onFulfilled与onRejected, 如果返回promise则会改变父promise状态，否则只有报错的情况下才会调用reject
+    var promise = new Promise((resolve,reject) => {reject(111)})
+    promise.then(res => {
+      console.log('resolve: ' + res)
+      return res
+    }, err => {
+      console.log('reject: ' + err)
+      return err
+    }).then(res => console.log('then: ' + res))
+    .catch(err => console.log('catch: ' + err))
+    
   </script>
 </body>
 
